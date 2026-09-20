@@ -1,0 +1,37 @@
+const API_URL = 'http://localhost:5000/api/cart';
+
+export async function getCart(userId) {
+  const response = await fetch(`${API_URL}/${userId}`);
+  if (!response.ok) throw new Error('Ошибка при получении корзины');
+  return await response.json();
+}
+
+export async function addToCart(user_id, service_id) {
+  const response = await fetch(API_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ user_id, service_id }),
+  });
+  if (!response.ok) throw new Error('Ошибка при добавлении в корзину');
+  return await response.json();
+}
+
+export async function updateCartItem(itemId, quantity) {
+  const response = await fetch(`${API_URL}/${itemId}`, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ quantity }),
+  });
+  if (!response.ok) throw new Error('Ошибка при обновлении');
+  return await response.json();
+}
+
+export async function removeCartItem(itemId) {
+  const response = await fetch(`${API_URL}/${itemId}`, { method: 'DELETE' });
+  if (!response.ok) throw new Error('Ошибка при удалении');
+}
+
+export async function clearCart(userId) {
+  const response = await fetch(`${API_URL}/clear/${userId}`, { method: 'DELETE' });
+  if (!response.ok) throw new Error('Ошибка при очистке');
+}
